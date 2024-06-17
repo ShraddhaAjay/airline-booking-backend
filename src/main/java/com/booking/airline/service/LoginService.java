@@ -19,8 +19,7 @@ public class LoginService {
 	public ResponseEntity<String> createLoginDetails(LoginDetails loginDetails) {
 
 		Optional<LoginDetails> existing = loginRepository.findById(loginDetails.getUsername());
-		if (existi
-				.ng.isEmpty()) {
+		if (existing.isEmpty()) {
 			loginDetails.setAccountStatus("Active");
 			loginDetails.setIsAdmin("N");
 			loginRepository.save(loginDetails);
