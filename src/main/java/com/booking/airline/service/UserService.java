@@ -71,8 +71,16 @@ public class UserService {
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
-    public ResponseEntity<String> deleteUserByUerName(String userID) {
-        userRepository.deleteById(userID);
+    public ResponseEntity<String> deleteUserByUserID(String userID) {
+        Optional<User> existingUser = userRepository.findById(userID);
+        if (existingUser.isEmpty()) {
+            return new ResponseEntity<>("User-" + userID + " does not exists", HttpStatus.BAD_REQUEST);
+        }
+        User user = existingUser.get();
+        Optional<Login> existingLogin = loginRepository.findById(user.getUsername());
+        existingLogin.get().setAccountStatus("Inactive");
+        loginRepository.save(existingLogin.get());
+        userRepository.delete(user);
         return new ResponseEntity<>("User-" + userID + " deleted successfully", HttpStatus.OK);
     }
 
