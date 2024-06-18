@@ -13,7 +13,7 @@ import javax.persistence.Id;
 public class Route {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;				// Route iD// pune-latur==001, pune to hyder==002
 	private String source;			// Source city
 	private String destination;		// Destination city
