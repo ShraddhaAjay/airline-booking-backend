@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 @Data
 public class Booking {
 	@Id
-	@GeneratedValue(generator = "uuid")
-	@GenericGenerator(name = "uuid", strategy = "uuid2")
+	@GeneratedValue(generator = "bid_gen")
+	@GenericGenerator(name = "bid_gen", strategy = "com.booking.airline.util.BookingIdGenerator")
 	private String id;                      // auto-generated booking id
 	private String source;                  // source city
 	private String destination;             // destination city

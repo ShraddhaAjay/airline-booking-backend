@@ -28,7 +28,7 @@ public class UserService {
 
     public ResponseEntity<String> addUserDetails(User user) {
         Optional<Login> existing = loginRepository.findById(user.getUsername());
-        if (existing.isEmpty()) {
+        if (existing.isPresent()) {
             Optional<User> existingUser = userRepository.findByUsername(user.getUsername());//old user coming for updation
             if (existingUser.isPresent()) {
                 return new ResponseEntity<>("User profile already exists", HttpStatus.BAD_REQUEST);

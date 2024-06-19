@@ -11,8 +11,8 @@ import org.hibernate.annotations.GenericGenerator;
 public class User {
 
 	@Id
-	@GeneratedValue(generator = "uuid")
-	@GenericGenerator(name = "uuid", strategy = "uuid2")
+	@GeneratedValue(generator = "uid_gen")
+	@GenericGenerator(name = "uid_gen", strategy = "com.booking.airline.util.UserIdGenerator")
 	private String userID;
 	//TODO
 	//UserID to be made in format as ARU001:-Airline User 001
