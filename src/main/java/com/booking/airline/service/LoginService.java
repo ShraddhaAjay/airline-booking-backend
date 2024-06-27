@@ -32,16 +32,16 @@ public class LoginService {
 		return new ResponseEntity("Username already exists", HttpStatus.BAD_REQUEST);
 	}
 
-	public ResponseEntity<String> checkUserLogin(Login login) {
+	public ResponseEntity<Login> checkUserLogin(Login login) {
 
 		Optional<Login> existing = loginRepository.findById(login.getUsername());
 		if (existing.isPresent()) {
 			if (login.getPassword().equals(existing.get().getPassword())) {
-				return new ResponseEntity("User login success", HttpStatus.OK);
+				return new ResponseEntity(existing, HttpStatus.OK);
 			}
-			return new ResponseEntity("User login failed", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity("Username invalid", HttpStatus.BAD_REQUEST);
+		return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
 	}
 
 	public ResponseEntity<String> passwordReset(Login login) {
