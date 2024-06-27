@@ -21,5 +21,6 @@ public class Schedule {
 	private LocalDateTime departureDateTime;// journey start date and time
 	private LocalDateTime arrivalDateTime;  // journey end date and time
 	private Double fare;                    // fare per seat // calculate using plane speed and time of travel criteria
-	private String planeId;   		     	// plane which is available for the journey
+	private Integer planeId;   		     	// plane which is available for the journey
 }
+

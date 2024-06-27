@@ -5,13 +5,11 @@ import com.booking.airline.service.ScheduleService;
 import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
+@CrossOrigin(originPatterns = "*")
 @RestController
 public class ScheduleController {
     @Autowired
@@ -31,7 +29,11 @@ public class ScheduleController {
     public ResponseEntity<List<Schedule>> getSchedule(@RequestParam ("source") String source,
                                                       @RequestParam ("destination")String destination,
                                                       @RequestParam ("departureDateTime")String departureDateTime){
-        return scheduleService.getSchedule(source,destination, LocalDateTime.parse(departureDateTime));
+        return scheduleService.getSchedule(source,destination, LocalDateTime.parse(departureDateTime+"T00:00"));
+    }
+    @PostMapping("/add-schedule")
+    public ResponseEntity<String> addSchedule(@RequestBody Schedule schedule){
+        return  scheduleService.addSchedule(schedule);
     }
 
 }

@@ -1,6 +1,10 @@
 package com.booking.airline.service;
 
+import com.booking.airline.model.Plane;
+import com.booking.airline.model.Route;
 import com.booking.airline.model.Schedule;
+import com.booking.airline.repository.PlaneRepository;
+import com.booking.airline.repository.RouteRepository;
 import com.booking.airline.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +19,10 @@ import java.util.Optional;
 public class ScheduleService {
     @Autowired
     private ScheduleRepository scheduleRepository;
+    @Autowired
+    private RouteRepository routeRepository;
+    @Autowired
+    private PlaneRepository planeRepository;
 
     public ResponseEntity<Schedule> getScheduleById(String id) {
         Optional<Schedule>  existing=scheduleRepository.findById(id);
@@ -32,5 +40,27 @@ public class ScheduleService {
     public ResponseEntity<List<Schedule>> getSchedule(String source, String destination, LocalDateTime departureDateTime) {
        List<Schedule> existing=scheduleRepository.findBySourceAndDestinationAndDepartureDateTimeGreaterThan(source,destination,departureDateTime);
        return new ResponseEntity<>(existing,HttpStatus.OK);
+    }
+
+    public ResponseEntity<String> addSchedule(Schedule schedule) {
+        //Validating source and destination from route
+        Optional<Route> existing = routeRepository.findBySourceAndDestination(schedule.getSource(), schedule.getDestination());
+        if (existing.isEmpty()) {
+            return new ResponseEntity<>("Route is invalid", HttpStatus.BAD_REQUEST);
+        }
+        //validating plane ID from
+        Optional<Plane> existingPlane = planeRepository.findById(schedule.getPlaneId());
+        if (existingPlane.isEmpty()) {
+            return new ResponseEntity<>("Invalid plane details", HttpStatus.BAD_REQUEST);
+        }
+        //validating current time with departure time of schedule
+        LocalDateTime today = LocalDateTime.now();
+        if (schedule.getDepartureDateTime().isBefore(today)) {
+            return new ResponseEntity<>("Invalid date time", HttpStatus.BAD_REQUEST);
+        }
+//        Optional<Schedule> existingSchedule= scheduleRepository.findByIdSourceAndDestination();
+        scheduleRepository.save(schedule);
+        return new ResponseEntity<>("Schedule added successfully",HttpStatus.CREATED);
+
     }
 }
