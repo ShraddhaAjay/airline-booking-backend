@@ -6,7 +6,11 @@ import java.time.format.DateTimeFormatter;
 public class CustomDateTimeFormatter {
 
     public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMddhhmmss");
+    public static DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyMMdd");
     public static String getFormattedYearDate(){
         return LocalDateTime.now().format(formatter);
+    }
+    public static String getFormattedDate(LocalDateTime date){
+        return date.format(formatter2);
     }
 }

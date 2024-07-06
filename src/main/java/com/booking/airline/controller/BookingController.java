@@ -10,6 +10,7 @@ import java.util.List;
 
 
 @RestController
+@CrossOrigin
 public class BookingController {
 
     @Autowired
@@ -30,8 +31,8 @@ public class BookingController {
         return bookingService.updateBooking(booking);
 
     }
-    @GetMapping("/getByID")
-    public ResponseEntity<Booking> getByBookingId(@RequestParam("id") String ID){
-        return bookingService.getByBookingId(ID);
+    @GetMapping("/getUserBookings")
+    public ResponseEntity<List<Booking>> getUserBookings(@RequestParam("username") String username){
+        return bookingService.getUserBookings(username);
     }
 }
