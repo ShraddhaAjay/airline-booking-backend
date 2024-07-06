@@ -2,6 +2,7 @@ package com.booking.airline.service;
 
 import com.booking.airline.model.Booking;
 import com.booking.airline.repository.BookingRepository;
+import com.booking.airline.util.SeatNumberGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,10 @@ public class BookingService {
 
     public ResponseEntity<String> addBooking(Booking booking) {
         booking.setBookingDateTime(LocalDateTime.now());
+        String seatNumber = SeatNumberGenerator.generateSeatNumber(booking.getJourneyDateTime(), booking.getPlaneId());
+        if(seatNumber==null)
+            new ResponseEntity<>("Booking full", HttpStatus.FAILED_DEPENDENCY);
+        booking.setSeatNumber(seatNumber.substring(booking.getPlaneId().length()+6));
         booking = bookingRepository.save(booking);
         return new ResponseEntity<>("Booking generated, Booking Id:" + booking.getId(), HttpStatus.CREATED);
     }
@@ -35,12 +40,10 @@ public class BookingService {
             existingBooking.setSource(booking.getSource());
             existingBooking.setDestination(booking.getDestination());
             existingBooking.setFare(booking.getFare());
-            existingBooking.setNoOfSeats(booking.getNoOfSeats());
-            existingBooking.setTotalFare(booking.getTotalFare());
             existingBooking.setBookedBy(existingBooking.getBookedBy());
             existingBooking.setBookingDateTime(LocalDateTime.now());
             existingBooking.setPlaneId(booking.getPlaneId());
-            existingBooking.setSeatNumbers(booking.getSeatNumbers());
+            existingBooking.setSeatNumber(booking.getSeatNumber());
             bookingRepository.save(existingBooking);
             return new ResponseEntity<>("Booking details updated", HttpStatus.OK);
         }
@@ -48,13 +51,8 @@ public class BookingService {
     }
 
 
-    public ResponseEntity<Booking> getByBookingId(String ID) {
-        Optional<Booking> existing = bookingRepository.findById(ID);
-        if (existing.isPresent()) {
-            return new ResponseEntity<>(existing.get(),HttpStatus.OK);
-        }
-        return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
-
+    public ResponseEntity<List<Booking>> getUserBookings(String username) {
+        return new ResponseEntity<>(bookingRepository.findByUsername(username),HttpStatus.OK);
     }
 }
 
