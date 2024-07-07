@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Book;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +24,7 @@ public class BookingService {
         String seatNumber = SeatNumberGenerator.generateSeatNumber(booking.getJourneyDateTime(), booking.getPlaneId());
         if(seatNumber==null)
             new ResponseEntity<>("Booking full", HttpStatus.FAILED_DEPENDENCY);
-        booking.setSeatNumber(seatNumber.substring(booking.getPlaneId().length()+6));
+        booking.setSeatNumber(seatNumber);
         booking = bookingRepository.save(booking);
         return new ResponseEntity<>("Booking generated, Booking Id:" + booking.getId(), HttpStatus.CREATED);
     }
@@ -53,6 +54,15 @@ public class BookingService {
 
     public ResponseEntity<List<Booking>> getUserBookings(String username) {
         return new ResponseEntity<>(bookingRepository.findByUsername(username),HttpStatus.OK);
+    }
+
+    public ResponseEntity<String> deleteBooking(String bid) {
+
+        if(bookingRepository.findById(bid).isPresent()) {
+            bookingRepository.deleteById(bid);
+            return new ResponseEntity<>("Booking Cancelled", HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 }
 

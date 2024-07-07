@@ -10,7 +10,7 @@ import java.util.List;
 
 
 @RestController
-@CrossOrigin
+@CrossOrigin(originPatterns = "*")
 public class BookingController {
 
     @Autowired
@@ -29,6 +29,12 @@ public class BookingController {
     @PutMapping("/booking")
     public ResponseEntity<String> updateBooking(@RequestBody Booking booking) {
         return bookingService.updateBooking(booking);
+
+    }
+
+    @DeleteMapping("/booking")
+    public ResponseEntity<String> updateBooking(@RequestParam("bid") String bid) {
+        return bookingService.deleteBooking(bid);
 
     }
     @GetMapping("/getUserBookings")

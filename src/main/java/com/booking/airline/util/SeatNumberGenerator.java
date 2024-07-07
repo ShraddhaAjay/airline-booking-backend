@@ -19,6 +19,6 @@ public class SeatNumberGenerator {
             seatNumber = 1;
             seatMap.put(key, seatNumber);
         }
-        return key+""+seatNumber;
+        return ""+seatNumber;
     }
 }
