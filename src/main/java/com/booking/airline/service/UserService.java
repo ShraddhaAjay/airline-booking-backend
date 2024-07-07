@@ -61,8 +61,8 @@ public class UserService {
         return new ResponseEntity<>(userList, HttpStatus.OK);
     }
 
-    public ResponseEntity<User> getUserById(String userID) {
-        Optional<User> user = userRepository.findById(userID);
+    public ResponseEntity<User> getUserByUsername(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
         //TODO
         //throw exception when user not found
         if(user.isPresent()) {

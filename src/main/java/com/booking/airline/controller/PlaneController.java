@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(originPatterns = "*")
 public class PlaneController {
     @Autowired
     private PlaneService planeService;

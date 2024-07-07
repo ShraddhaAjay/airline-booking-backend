@@ -9,6 +9,7 @@ import com.booking.airline.model.User;
 import java.util.List;
 
 @RestController
+@CrossOrigin(originPatterns = "*")
 public class UserController {
     @Autowired
     UserService userService;
@@ -29,9 +30,9 @@ public class UserController {
         return userService.getUsers();
     }
 
-    @GetMapping("/getByUserID") // if the userID is not existing then throw a message "Invalid UserID".
-    public ResponseEntity<User> getUserById(@RequestParam("id") String userID) {
-        return userService.getUserById(userID);
+    @GetMapping("/users") // if the userID is not existing then throw a message "Invalid UserID".
+    public ResponseEntity<User> getUserById(@RequestParam("username") String username) {
+        return userService.getUserByUsername(username);
     }
 
     @DeleteMapping("/deleteUser")
