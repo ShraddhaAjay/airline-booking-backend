@@ -12,14 +12,8 @@ import javax.persistence.Id;
 public class Plane {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;				// Plane ID
     private String name;			// name
-    private Double speed;   		// speed in kmph
-    private Integer economySeats;  	// total economy seats
-    private Integer businessSeats;	// total business seats
-    private Integer totalSeats;		// total seats
-    private String currentLocation; // headed towards
-    private String lastLocation;    // started from
-    private String status; 			// plane status : AVA/UNA/FLY
+    private Integer seatCapacity;		// total seats
 }
