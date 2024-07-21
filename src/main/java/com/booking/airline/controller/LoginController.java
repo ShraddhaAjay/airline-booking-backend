@@ -1,5 +1,6 @@
 package com.booking.airline.controller;
 
+import com.booking.airline.model.PasswordDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +27,8 @@ public class LoginController {
 		return loginService.checkUserLogin(login);
 		
 	}
-	@PutMapping("/passwordReset")
-	public ResponseEntity<String>passwordReset(@RequestBody Login login){
-		return loginService.passwordReset(login);
+	@PostMapping("/passwordReset")
+	public ResponseEntity<String>passwordReset(@RequestBody PasswordDetails passwordDetails){
+		return loginService.passwordReset(passwordDetails);
 	}
 }
