@@ -33,4 +33,9 @@ public class PlaneController {
     public ResponseEntity<String> updatePlaneinfo(@RequestBody Plane plane) {
         return planeService.updatePlaneinfo(plane);
     }
+
+    @GetMapping("/getplane-byid")
+    public ResponseEntity<Plane>getPlaneById(@RequestParam("id")Integer id){
+        return planeService.getPlaneById(id);
+    }
 }

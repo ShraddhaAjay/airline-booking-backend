@@ -9,24 +9,22 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
 @Service
 public class PlaneService {
     @Autowired
     private PlaneRepository planeRepository;
 
     public ResponseEntity<String> addPlaneDetails(Plane plane) {
-
         if (plane!=null) {        //Add Id
             planeRepository.save(plane);
             return new ResponseEntity<>("plane added successfully", HttpStatus.OK);
         }
-        //plane detail are existing
-        else {
+        else { ////plane detail are existing
             return new ResponseEntity<String>("details not valid", HttpStatus.BAD_REQUEST);
         }
 
     }
-
     public ResponseEntity<Plane> getPlaneInfo(int id) {
         Optional<Plane> existingPlane = planeRepository.findById(id);
         if (existingPlane.isPresent()) {
@@ -40,7 +38,14 @@ public class PlaneService {
     public ResponseEntity<List<Plane>> getallplane() {
         List<Plane> planeList = planeRepository.findAll();
         return new ResponseEntity<>(planeList, HttpStatus.OK);
+    }
 
+    public ResponseEntity<Plane>getPlaneById(Integer id){
+       Optional <Plane> planeid= planeRepository.findById(id);
+       if(planeid.isPresent()){
+         return new ResponseEntity<>(planeid.get(),HttpStatus.OK)  ;
+       }
+       return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
     }
 
     public ResponseEntity<String> updatePlaneinfo(Plane plane) {
@@ -54,8 +59,6 @@ public class PlaneService {
             return new ResponseEntity<>("Plane details updated successfully", HttpStatus.OK);
         }
         return new ResponseEntity<>("Id invalid", HttpStatus.BAD_REQUEST);
-
-
-
     }
+
 }
