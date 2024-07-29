@@ -10,4 +10,7 @@ import java.util.List;
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule,String> {
  List<Schedule>  findBySourceAndDestinationAndDepartureDateTimeGreaterThan(String source , String destination, LocalDateTime departureDateTime);
+
+
+
 }

@@ -4,8 +4,8 @@ import java.util.Optional;
 
 import com.booking.airline.model.PasswordDetails;
 import com.booking.airline.model.User;
-import com.booking.airline.repository.PlaneRepository;
 import com.booking.airline.repository.UserRepository;
+import com.booking.airline.util.EncryptionUtil;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +17,8 @@ import com.booking.airline.repository.LoginRepository;
 
 @Service
 public class LoginService {
+	@Autowired
+	private EncryptionUtil encryptionUtil;
 
 	@Autowired
 	private LoginRepository loginRepository;
@@ -32,6 +34,11 @@ public class LoginService {
 			}
 			login.setAccountStatus("Active");
 			login.setIsAdmin("N");
+			try {
+				login.setPassword(encryptionUtil.encrypt(login.getPassword()));
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
 			loginRepository.save(login);
 			return new ResponseEntity("User created successfully", HttpStatus.CREATED);
 		}
@@ -41,7 +48,13 @@ public class LoginService {
 	public ResponseEntity<Login> checkUserLogin(Login login) {
 		Optional<Login> existing = loginRepository.findById(login.getUsername());
 		if (existing.isPresent()) {
-			if (login.getPassword().equals(existing.get().getPassword())) {
+			String decrypted_password = "";
+			try {
+				decrypted_password = encryptionUtil.decrypt(existing.get().getPassword());
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+			if (login.getPassword().equals(decrypted_password)){
 				return new ResponseEntity(existing, HttpStatus.OK);
 			}
 			return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
@@ -59,12 +72,18 @@ public class LoginService {
 						return new ResponseEntity("Password can not be blank", HttpStatus.BAD_REQUEST);
 					}
 					Login loginDetails = existing.get();
-					loginDetails.setPassword(passwordDetails.getPassword());
+					try {
+						loginDetails.setPassword(encryptionUtil.encrypt(passwordDetails.getPassword()));
+					} catch (Exception e) {
+						throw new RuntimeException(e);
+					}
 					loginRepository.save(loginDetails);
 					return new ResponseEntity<>("Password Updated Successfully", HttpStatus.OK);
 				}
 
 			}
+			return new ResponseEntity<>("Mobile number does not match", HttpStatus.BAD_REQUEST);
+
 		}
 		return new ResponseEntity<>("UserName Invalid", HttpStatus.BAD_REQUEST);
 	}

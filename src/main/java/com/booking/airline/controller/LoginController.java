@@ -25,7 +25,7 @@ public class LoginController {
 	public ResponseEntity<Login> checkUserLogin(@RequestBody Login login){
 		
 		return loginService.checkUserLogin(login);
-		
+
 	}
 	@PostMapping("/passwordReset")
 	public ResponseEntity<String>passwordReset(@RequestBody PasswordDetails passwordDetails){
