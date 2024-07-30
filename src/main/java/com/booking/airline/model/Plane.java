@@ -16,4 +16,5 @@ public class Plane {
     private Integer id;				// Plane ID
     private String name;			// name
     private Integer seatCapacity;		// total seats
+    private Double speed;   		// speed in kmph
 }

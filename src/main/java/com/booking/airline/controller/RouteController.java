@@ -35,4 +35,11 @@ public class RouteController {
         return routeService.updateRoute(route);
     }
 
+    @DeleteMapping("/delete-route")
+    public ResponseEntity<String> deleterRoute(@RequestParam("id") int id){ return routeService.deleteRoute(id);
+    }
+
+    @GetMapping("/get-allCities")
+    public ResponseEntity<List<String>> addCities(){ return routeService.getAllCities();
+    }
 }
