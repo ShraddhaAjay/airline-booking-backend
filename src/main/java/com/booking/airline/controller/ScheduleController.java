@@ -36,4 +36,15 @@ public class ScheduleController {
         return  scheduleService.addSchedule(schedule);
     }
 
+    @PutMapping("/update-schedule")
+    public ResponseEntity<String> updateSchedule(@RequestBody Schedule schedule){
+        return  scheduleService.updateSchedule(schedule);
+    }
+
+    @DeleteMapping("/delete-schedule")
+    public ResponseEntity<String> deleteSchedule(@RequestParam("id") String id){ return scheduleService.deleteSchedule(id);
+    }
+
+
+
 }

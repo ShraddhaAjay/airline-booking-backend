@@ -7,11 +7,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class RouteService {
+
+    private static List<String> Cities = new ArrayList();
+    static {
+        Cities.add("Select City"); Cities.add("Pune");Cities.add("Solapur");Cities.add("Delhi");Cities.add("Mumbai");Cities.add("Goa");Cities.add("Banglore");
+        Cities.add("Satara");Cities.add("Sangali");Cities.add("Latur");Cities.add("Ahemdabad");
+    }
+
     @Autowired
     private RouteRepository routeRepository;
 
@@ -57,4 +65,15 @@ public class RouteService {
         return new ResponseEntity<>("Invalid Route Id", HttpStatus.BAD_REQUEST);
     }
 
+    public ResponseEntity<String> deleteRoute(int id) {
+        if(routeRepository.findById(id).isPresent()){
+            routeRepository.deleteById(id);
+            return new ResponseEntity<>("Route Deleted Successfully..!", HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<String>> getAllCities() {
+        return new ResponseEntity<>(Cities, HttpStatus.OK);
+    }
 }
